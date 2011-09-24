@@ -39,6 +39,7 @@ value(Num) when is_list(Num) ->
 
 value(Num) when is_atom(Num) ->
     case Num of
+        zero -> 0;
         one -> 1;
         once -> 1;
         two -> 2;
