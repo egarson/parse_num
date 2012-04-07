@@ -1,4 +1,14 @@
+%%%-----------------------------------------------------------------------------
+%%% @author Edward Garson <egarson@gmail.com>
+%%% @copyright (C) 2012 Edward Garson
+%%% @doc Parses atoms with a 'numeric' representation into the scalar equivalent.
+%%% @end
+%%%
+%%% This source file is distributed under the terms of the MIT license as
+%%% described by the file MIT-LICENSE included with this software.
+%%%------------------------------------------------------------------------------
 -module(parse_num).
+-author('Edward Garson <egarson@gmail.com>').
 -export([parse/1]).
 -define(magnitudes, [hundred, thousand, million, billion, trillion]).
 

@@ -1,0 +1,9 @@
+{application, parse_num,
+ [
+  {description, "Parse 'numeric' atoms into their scalar equivalent"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications, [kernel, stdlib]},
+  {mod, { parse_num_app, []}},
+  {env, []}
+ ]}.

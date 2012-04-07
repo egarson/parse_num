@@ -1,4 +1,12 @@
+%%%-----------------------------------------------------------------------------
+%%% @author Edward Garson <egarson@gmail.com>
+%%% @copyright (C) 2012 Edward Garson
+%%%
+%%% This source file is distributed under the terms of the MIT license as
+%%% described by the file MIT-LICENSE included with this software.
+%%%-----------------------------------------------------------------------------
 -module(parse_num_test).
+-author('Edward Garson <egarson@gmail.com>').
 -compile(export_all).
 -include_lib("eunit/include/eunit.hrl").
 -import(parse_num, [parse/1]).
@@ -7,16 +15,17 @@
 
 gen_test_() ->
     gen(199).
+
 gen(N) when N > 0 ->
     {generator, fun() -> [?_assertEqual(N, parse(num_to_atom_num(N))) | gen(N-1)] end};
-gen(0) ->
+gen(_) ->
     [].
 
 %% Given num_to_atom_num(123) return one_hundred_twenty_three
 num_to_atom_num(N) ->
     num_to_atom_num(integer_to_list(N), []).
 
-num_to_atom_num([First|Rest], Nums) -> %%when length(Rest) > 0 ->
+num_to_atom_num([First|Rest], Nums) ->
     NumDigits = string:len(Rest) + 1,
     Factor = trunc(math:pow(10, NumDigits-1)),
     {FirstNum,_} = string:to_integer([First]),
@@ -30,7 +39,6 @@ num_to_atom_num([First|Rest], Nums) -> %%when length(Rest) > 0 ->
 num_to_atom_num(_, Nums) ->
     ?log("Nums-~p~n", [Nums]),
     list_to_atom(string:join([atom_to_list(num_to_atom(N)) || N <- lists:reverse(Nums)], "_")).
-    %% list_to_atom(string:join(lists:map(fun(N) -> num_to_atom(N) end, lists:reverse(Nums)), "_")).
 
 num_to_atom(N) ->
     case N of
@@ -77,21 +85,27 @@ parse_test_() ->
      ?_assertEqual(3, parse(thrice)),
      ?_assertEqual(3, parse(three)),
      ?_assertEqual(4, parse(four)),
+     ?_assertEqual(9, parse(nine)),
      ?_assertEqual(10, parse(ten)),
+     ?_assertEqual(11, parse(eleven)),
      ?_assertEqual(20, parse(twenty)),
      ?_assertEqual(21, parse(twenty_one)),
      ?_assertEqual(29, parse(twenty_nine)),
      ?_assertEqual(30, parse(thirty)),
      ?_assertEqual(31, parse(thirty_one)),
-     ?_assertEqual(33, parse(thirty_three_times)),
+     ?_assertEqual(33, parse(thirty_three)),
      ?_assertEqual(99, parse(ninety_nine)),
      ?_assertEqual(100, parse(one_hundred)),
+     ?_assertEqual(101, parse(one_hundred_and_one)),
+     ?_assertEqual(199, parse(one_hundred_ninety_nine)),
+     ?_assertEqual(200, parse(two_hundred)),
      ?_assertEqual(202, parse(two_hundred_and_two)),
      ?_assertEqual(269, parse(two_hundred_and_sixty_nine)),
      ?_assertEqual(386, parse(three_hundred_and_eighty_six)),
      ?_assertEqual(999, parse(nine_hundred_and_ninety_nine)),
      ?_assertEqual(1001, parse(one_thousand_and_one)),
-     ?_assertEqual(2300, parse(two_thousand_three_hundred)),
+     ?_assertEqual(2300, parse(two_thousand_three_hundred)), %% grammatically correct
+     ?_assertEqual(2300, parse(twenty_three_hundred)),       %% 'colloquial'
      ?_assertEqual(203000, parse(two_hundred_three_thousand)),
      ?_assertEqual(2400, parse(two_thousand_four_hundred)),
      ?_assertEqual(1907, parse(one_thousand_nine_hundred_and_seven)),
